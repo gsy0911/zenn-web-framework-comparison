@@ -1,0 +1,14 @@
+services:
+  comparison-fastapi:
+    build:
+      context: ./python/fastapi
+      dockerfile: Dockerfile
+    container_name: comparison-fastapi
+    ports:
+      - "8080:8080"
+    tty: true
+    platform: linux/amd64
+    volumes:
+      - "./python/fastapi/src:/opt/app/src"
+
+

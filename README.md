@@ -1,1 +1,1 @@
-# zenn-wev-framework-comparison
+# zenn-web-framework-comparison
