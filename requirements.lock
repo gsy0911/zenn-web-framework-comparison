@@ -9,8 +9,6 @@
 #   generate-hashes: false
 #   universal: false
 
--e file:.
--e file:python/fastapi
 annotated-types==0.7.0
     # via pydantic
 anyio==4.6.2.post1
@@ -19,7 +17,6 @@ anyio==4.6.2.post1
 click==8.1.7
     # via uvicorn
 fastapi==0.115.4
-    # via comparizon-fastapi
 h11==0.14.0
     # via uvicorn
 httptools==0.6.4
@@ -43,7 +40,6 @@ typing-extensions==4.12.2
     # via pydantic
     # via pydantic-core
 uvicorn==0.32.0
-    # via comparizon-fastapi
 uvloop==0.21.0
     # via uvicorn
 watchfiles==0.24.0

@@ -1,8 +1,8 @@
 services:
   comparison-fastapi:
     build:
-      context: ./python/fastapi
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: python/fastapi/Dockerfile
     container_name: comparison-fastapi
     ports:
       - "8080:8080"
