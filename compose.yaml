@@ -11,6 +11,7 @@ services:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
       - "443:443"
+
   nginx:
     container_name: nginx
     build:
@@ -18,6 +19,8 @@ services:
     restart: unless-stopped
     ports:
       - "8443:8443"
+    volumes:
+      - "fastapi_socket:/tmp/fastapi"
 
   fastapi:
     container_name: fastapi
@@ -30,5 +33,7 @@ services:
     platform: linux/arm64
     volumes:
       - "./python/fastapi/src:/opt/app/src"
+      - "fastapi_socket:/opt/app/tmp"
 
-
+volumes:
+  fastapi_socket:
