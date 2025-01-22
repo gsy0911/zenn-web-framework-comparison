@@ -15,7 +15,9 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = []
+dev-dependencies = [
+    "locust>=2.32.6",
+]
 virtual = true
 
 [tool.hatch.metadata]

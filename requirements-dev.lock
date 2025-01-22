@@ -14,15 +14,54 @@ annotated-types==0.7.0
 anyio==4.6.2.post1
     # via starlette
     # via watchfiles
+blinker==1.9.0
+    # via flask
+brotli==1.1.0
+    # via geventhttpclient
+certifi==2024.12.14
+    # via geventhttpclient
+    # via requests
+charset-normalizer==3.4.1
+    # via requests
 click==8.1.7
+    # via flask
     # via uvicorn
+configargparse==1.7
+    # via locust
 fastapi==0.115.4
+flask==3.1.0
+    # via flask-cors
+    # via flask-login
+    # via locust
+flask-cors==5.0.0
+    # via locust
+flask-login==0.6.3
+    # via locust
+gevent==24.11.1
+    # via geventhttpclient
+geventhttpclient==2.3.3
+    # via locust
+greenlet==3.1.1
+    # via gevent
 h11==0.14.0
     # via uvicorn
 httptools==0.6.4
     # via uvicorn
 idna==3.10
     # via anyio
+    # via requests
+itsdangerous==2.2.0
+    # via flask
+jinja2==3.1.5
+    # via flask
+locust==2.32.6
+markupsafe==3.0.2
+    # via jinja2
+    # via werkzeug
+msgpack==1.1.0
+    # via locust
+psutil==6.1.1
+    # via locust
 pydantic==2.9.2
     # via fastapi
 pydantic-core==2.23.4
@@ -31,6 +70,14 @@ python-dotenv==1.0.1
     # via uvicorn
 pyyaml==6.0.2
     # via uvicorn
+pyzmq==26.2.0
+    # via locust
+requests==2.32.3
+    # via locust
+setuptools==75.8.0
+    # via locust
+    # via zope-event
+    # via zope-interface
 sniffio==1.3.1
     # via anyio
 starlette==0.41.2
@@ -39,6 +86,9 @@ typing-extensions==4.12.2
     # via fastapi
     # via pydantic
     # via pydantic-core
+urllib3==2.3.0
+    # via geventhttpclient
+    # via requests
 uvicorn==0.32.0
 uvloop==0.21.0
     # via uvicorn
@@ -46,3 +96,11 @@ watchfiles==0.24.0
     # via uvicorn
 websockets==13.1
     # via uvicorn
+werkzeug==3.1.3
+    # via flask
+    # via flask-login
+    # via locust
+zope-event==5.0
+    # via gevent
+zope-interface==7.2
+    # via gevent

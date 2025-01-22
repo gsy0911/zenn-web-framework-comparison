@@ -16,5 +16,5 @@ def get_user():
     return {"status": "success"}
 
 
-app.include_router(router=api_router, prefix="/api/v1")
+app.include_router(router=api_router, prefix="/fastapi/v1")
 

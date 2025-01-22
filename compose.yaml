@@ -1,13 +1,33 @@
 services:
-  comparison-fastapi:
+  caddy:
+    container_name: caddy
+    build:
+      context: ./caddy
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: "https://localhost"
+      FASTAPI_API_SERVER_ADDRESS: "fastapi:8080"
+    volumes:
+      - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
+    ports:
+      - "443:443"
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+
+  fastapi:
+    container_name: fastapi
     build:
       context: .
       dockerfile: python/fastapi/Dockerfile
-    container_name: comparison-fastapi
     ports:
       - "8080:8080"
     tty: true
-    platform: linux/amd64
+    platform: linux/arm64
     volumes:
       - "./python/fastapi/src:/opt/app/src"
 

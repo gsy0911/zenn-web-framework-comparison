@@ -1,0 +1,4 @@
+{$SERVER_NAME:localhost} {
+    tls ./localhost.pem ./localhost-key.pem
+    reverse_proxy /fastapi/* {$FASTAPI_API_SERVER_ADDRESS}
+}
