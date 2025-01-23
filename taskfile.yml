@@ -32,8 +32,17 @@ tasks:
         vars:
           locustfile: "nginx_tcp_fastapi.py"
 
+  bare-tcp-fastapi:
+    desc: fastapi - uds; e.g. $ task fastapi-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "bare_tcp_fastapi.py"
+
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
     cmds:
+      - task: bare-tcp-fastapi
       - task: nginx-uds-fastapi
       - task: nginx-tcp-fastapi

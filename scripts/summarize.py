@@ -37,14 +37,38 @@ class XYChart(BaseModel):
         for stats in self.locust_stats:
             x_axis.append(stats.locustfile)
             bar.append(str(int(stats.requests_per_s)))
-        
-        return f"""
-        ```mermaid
-        xychart-beta horizontal
-            title "Web Framework Benchmark"
-            x-axis [{', '.join(x_axis)}]
-            y-axis "Requests per sec (higher is better)"
-            bar [{', '.join(bar)}]
-        ```
-        """
 
+        return f"""
+```mermaid
+xychart-beta horizontal
+    title "Web Framework Benchmark"
+    x-axis [{", ".join(x_axis)}]
+    y-axis "Requests per sec (higher is better)"
+    bar [{", ".join(bar)}]
+```
+"""
+
+
+def main():
+    base_path = "./reports/{locustfile}_stats.csv"
+    locustfiles = ["nginx_uds_fastapi.py", "nginx_tcp_fastapi.py", "bare_tcp_fastapi.py"]
+    paths = [base_path.format(locustfile=l) for l in locustfiles]
+    dfs = []
+    for p in paths:
+        df = pd.read_csv(p)
+        df["locustfile"] = p.rsplit("/", 1)[1].split(".py", 1)[0]
+        dfs.append(df)
+
+    df = pd.concat(dfs)
+
+    stats = []
+
+    for _, row in df.iterrows():
+        l = LocustStats(**dict(row))
+        if l.type == "GET":
+            stats.append(l)
+    print(XYChart(locust_stats=stats).dump())
+
+
+if __name__ == "__main__":
+    main()

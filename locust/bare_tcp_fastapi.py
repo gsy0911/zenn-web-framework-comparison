@@ -2,12 +2,12 @@ from locust import HttpUser, task
 
 
 class User(HttpUser):
-    host = "https://localhost:8443"
+    host = "http://localhost:8080"
 
     @task
     def access(self):
         _ = self.client.get(
-            url="/fastapi-uds/v1/user",
+            url="/fastapi-tcp/v1/user",
             verify=False,
             headers={"Keep-Alive": "timeout=5, max=1000"},
             # verify="./ssl/localhost.pem",
