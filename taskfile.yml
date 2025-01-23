@@ -1,0 +1,39 @@
+version: '3'
+
+tasks:
+
+  default:
+    cmds:
+      - task -l --sort none
+    silent: true
+
+  locust:
+    desc: deploy batch
+    internal: true
+    cmds:
+      - |
+        rye run locust -f ./locust/{{.locustfile}} \
+        --users 512 --spawn-rate 64 --csv ./reports/{{.locustfile}} \
+        --headless --only-summary --run-time 1m
+
+  fastapi-uds:
+    desc: fastapi - uds; e.g. $ task fastapi-uds
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "fastapi_uds.py"
+
+  fastapi-tcp:
+    desc: fastapi - uds; e.g. $ task fastapi-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "fastapi_tcp.py"
+
+  benchmark-all:
+    desc: all; e.g. $ task benchmark-all
+    cmds:
+      - task: fastapi-uds
+      - task: fastapi-tcp
