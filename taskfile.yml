@@ -16,24 +16,24 @@ tasks:
         --users 512 --spawn-rate 64 --csv ./reports/{{.locustfile}} \
         --headless --only-summary --run-time 1m
 
-  fastapi-uds:
+  nginx-uds-fastapi:
     desc: fastapi - uds; e.g. $ task fastapi-uds
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "fastapi_uds.py"
+          locustfile: "nginx_uds_fastapi.py"
 
-  fastapi-tcp:
+  nginx-tcp-fastapi:
     desc: fastapi - uds; e.g. $ task fastapi-tcp
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "fastapi_tcp.py"
+          locustfile: "nginx_tcp_fastapi.py"
 
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
     cmds:
-      - task: fastapi-uds
-      - task: fastapi-tcp
+      - task: nginx-uds-fastapi
+      - task: nginx-tcp-fastapi
