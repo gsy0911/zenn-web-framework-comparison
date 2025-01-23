@@ -15,6 +15,3 @@ RUN mkdir -p /opt/app/tmp \
 USER nginxuser
 WORKDIR /opt/app/src
 
-# CMD ["uvicorn", "main:app", "--host=0.0.0.0", "--port=8080"]
-CMD ["uvicorn", "main:app", "--uds", "/opt/app/tmp/uvicorn.sock"]
-

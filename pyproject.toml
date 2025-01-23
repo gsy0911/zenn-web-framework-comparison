@@ -17,6 +17,7 @@ build-backend = "hatchling.build"
 managed = true
 dev-dependencies = [
     "locust>=2.32.6",
+    "ruff>=0.9.2",
 ]
 virtual = true
 
@@ -135,4 +136,5 @@ docstring-code-line-length = "dynamic"
 
 [tool.rye.scripts]
 format = { chain = ["ruff format", "ruff check --fix"] }
-
+fastapi-uds = "locust -f ./locust/fastapi_uds.py --users 512 --spawn-rate 64 --headless --run-time 1m"
+fastapi-tcp = "locust -f ./locust/fastapi_tcp.py --users 512 --spawn-rate 64 --headless --run-time 1m"

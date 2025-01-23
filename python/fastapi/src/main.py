@@ -1,6 +1,9 @@
+import os
 from logging import INFO, getLogger
+
 from fastapi import APIRouter, FastAPI
 
+PREFIX = os.environ["PREFIX"]
 
 app = FastAPI()
 api_router = APIRouter()
@@ -16,5 +19,4 @@ def get_user():
     return {"status": "success"}
 
 
-app.include_router(router=api_router, prefix="/fastapi/v1")
-
+app.include_router(router=api_router, prefix=PREFIX)

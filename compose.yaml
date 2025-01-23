@@ -21,19 +21,36 @@ services:
       - "8443:8443"
     volumes:
       - "fastapi_socket:/tmp/fastapi"
+      - "./ssl:/etc/nginx/ssl"
 
-  fastapi:
-    container_name: fastapi
+  fastapi-uds:
+    container_name: fastapi-uds
+    build:
+      context: .
+      dockerfile: python/fastapi/Dockerfile
+    tty: true
+    environment:
+      PREFIX: "/fastapi-uds/v1"
+    platform: linux/arm64
+    volumes:
+      - "./python/fastapi/src:/opt/app/src"
+      - "fastapi_socket:/opt/app/tmp"
+    command: uvicorn main:app --uds /opt/app/tmp/uvicorn.sock
+
+  fastapi-tcp:
+    container_name: fastapi-tcp
     build:
       context: .
       dockerfile: python/fastapi/Dockerfile
     ports:
       - "8080:8080"
     tty: true
+    environment:
+      PREFIX: "/fastapi-tcp/v1"
     platform: linux/arm64
     volumes:
       - "./python/fastapi/src:/opt/app/src"
-      - "fastapi_socket:/opt/app/tmp"
+    command: uvicorn main:app --host=0.0.0.0 --port=8080
 
 volumes:
   fastapi_socket:
