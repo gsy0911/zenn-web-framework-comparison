@@ -32,6 +32,14 @@ tasks:
         vars:
           locustfile: "nginx_tcp_fastapi.py"
 
+  caddy-tcp-fastapi:
+    desc: fastapi - uds; e.g. $ task fastapi-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "caddy_tcp_fastapi.py"
+
   bare-tcp-fastapi:
     desc: fastapi - uds; e.g. $ task fastapi-tcp
     internal: true
@@ -46,3 +54,5 @@ tasks:
       - task: bare-tcp-fastapi
       - task: nginx-uds-fastapi
       - task: nginx-tcp-fastapi
+      - task: caddy-tcp-fastapi
+      - rye run python ./scripts/summarize.py

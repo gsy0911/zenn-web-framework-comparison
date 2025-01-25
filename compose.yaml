@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     environment:
       SERVER_NAME: "https://localhost"
-      FASTAPI_API_SERVER_ADDRESS: "fastapi:8080"
+      FASTAPI_API_SERVER_ADDRESS: "fastapi-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:

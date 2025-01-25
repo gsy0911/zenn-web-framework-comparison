@@ -43,7 +43,7 @@ class XYChart(BaseModel):
 xychart-beta horizontal
     title "Web Framework Benchmark"
     x-axis [{", ".join(x_axis)}]
-    y-axis "Requests per sec (higher is better)"
+    y-axis "Requests per sec (higher is better)" 1000 --> 5000
     bar [{", ".join(bar)}]
 ```
 """
@@ -51,7 +51,12 @@ xychart-beta horizontal
 
 def main():
     base_path = "./reports/{locustfile}_stats.csv"
-    locustfiles = ["nginx_uds_fastapi.py", "nginx_tcp_fastapi.py", "bare_tcp_fastapi.py"]
+    locustfiles = [
+        "nginx_uds_fastapi.py",
+        "nginx_tcp_fastapi.py",
+        "caddy_tcp_fastapi.py",
+        "bare_tcp_fastapi.py",
+    ]
     paths = [base_path.format(locustfile=l) for l in locustfiles]
     dfs = []
     for p in paths:
@@ -63,7 +68,7 @@ def main():
 
     stats = []
 
-    for _, row in df.iterrows():
+    for _, row in df.sort_values(by=["Requests/s"], ascending=False).iterrows():
         l = LocustStats(**dict(row))
         if l.type == "GET":
             stats.append(l)
