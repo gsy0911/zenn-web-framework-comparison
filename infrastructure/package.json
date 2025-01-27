@@ -7,10 +7,12 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "format": "biome format --write lib bin biome.json cdk.json"
   },
   "devDependencies": {
     "@types/node": "22.10.10",
+    "@biomejs/biome": "^1.9.4",
     "aws-cdk": "^2.177.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"

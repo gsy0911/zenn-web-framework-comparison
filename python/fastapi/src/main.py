@@ -19,4 +19,9 @@ def get_user():
     return {"status": "success"}
 
 
+@api_router.get("/healthchek")
+def healthchek():
+    return {"status": "success"}
+
+
 app.include_router(router=api_router, prefix=PREFIX)
