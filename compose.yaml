@@ -7,6 +7,7 @@ services:
     environment:
       SERVER_NAME: "https://localhost"
       FASTAPI_API_SERVER_ADDRESS: "fastapi-tcp:8080"
+      FLASK_API_SERVER_ADDRESS: "flask-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
@@ -21,6 +22,7 @@ services:
       - "8443:8443"
     volumes:
       - "fastapi_socket:/tmp/fastapi"
+      - "flask_socket:/tmp/flask"
       - "./ssl:/etc/nginx/ssl"
 
   fastapi-uds:
@@ -52,5 +54,21 @@ services:
       - "./python/fastapi/src:/opt/app/src"
     command: uvicorn main:app --host=0.0.0.0 --port=8080
 
+  flask-tcp:
+    container_name: flask-tcp
+    build:
+      context: .
+      dockerfile: python/flask/Dockerfile
+    ports:
+      - "8081:8080"
+    tty: true
+    environment:
+      PREFIX: "/flask-tcp/v1"
+    platform: linux/arm64
+    volumes:
+      - "./python/flask/src:/opt/app/src"
+    command: gunicorn main:app --bind 0.0.0.0:8080
+
 volumes:
   fastapi_socket:
+  flask_socket:

@@ -1,7 +1,7 @@
 import os
 from logging import INFO, getLogger
 
-from flask import Flask, jsonify
+from flask import Flask, Response, jsonify
 
 PREFIX = os.environ.get("PREFIX", "")
 
@@ -14,7 +14,7 @@ __all__ = ["app"]
 
 
 @app.route(f"{PREFIX}/user", methods=["GET"])
-def get_user():
+def get_user() -> Response:
     return jsonify({"status": "success"})
 
 
