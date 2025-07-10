@@ -16,15 +16,28 @@ anyio==4.6.2.post1
     # via watchfiles
 click==8.1.7
     # via uvicorn
+    # via flask
 fastapi==0.115.4
+flask==3.0.0
+    # via comparizon-flask
+gunicorn==23.0.0
+    # via comparizon-flask
 h11==0.14.0
     # via uvicorn
 httptools==0.6.4
     # via uvicorn
 idna==3.10
     # via anyio
+itsdangerous==2.2.0
+    # via flask
+jinja2==3.1.4
+    # via flask
+markupsafe==2.1.5
+    # via jinja2
 numpy==2.2.2
     # via pandas
+packaging==24.2
+    # via gunicorn
 pandas==2.2.3
 pydantic==2.10.5
     # via fastapi
@@ -57,3 +70,5 @@ watchfiles==0.24.0
     # via uvicorn
 websockets==13.1
     # via uvicorn
+werkzeug==3.0.4
+    # via flask
