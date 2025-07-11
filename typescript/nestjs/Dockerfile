@@ -1,15 +1,15 @@
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /opt/app
 
 # Copy package files from the nestjs directory
-COPY typescript/nestjs/package*.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy source code from the nestjs directory
-COPY typescript/nestjs/ .
+COPY ./ .
 
 # Build the application
 RUN npm run build

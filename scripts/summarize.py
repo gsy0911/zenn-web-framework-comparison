@@ -52,11 +52,18 @@ xychart-beta horizontal
 def main():
     base_path = "./reports/{locustfile}_stats.csv"
     locustfiles = [
+        # python: fastapi
         "nginx_uds_fastapi.py",
         "nginx_tcp_fastapi.py",
         "caddy_tcp_fastapi.py",
         "bare_tcp_fastapi.py",
+        # python: flask
         "bare_tcp_flask.py",
+        # typescript: nestjs
+        # "nginx_uds_nestjs.py",
+        "nginx_tcp_nestjs.py",
+        # "caddy_tcp_nestjs.py",
+        "bare_tcp_nestjs.py",
     ]
     paths = [base_path.format(locustfile=l) for l in locustfiles]
     dfs = []

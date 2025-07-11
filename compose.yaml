@@ -74,16 +74,15 @@ services:
   nestjs-tcp:
     container_name: nestjs-tcp
     build:
-      context: .
-      dockerfile: typescript/nestjs/Dockerfile
+      context: ./typescript/nestjs
+      dockerfile: Dockerfile
     ports:
       - "8082:8080"
     tty: true
     environment:
       PREFIX: "/nestjs-tcp/v1"
     volumes:
-      - "./typescript/nestjs/src:/opt/app/src"
-      - "./typescript/nestjs/dist:/opt/app/dist"
+      - "./src:/opt/app/src"
 
 volumes:
   fastapi_socket:

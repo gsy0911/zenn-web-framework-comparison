@@ -90,5 +90,5 @@ tasks:
       - task: bare-tcp-flask
       - task: bare-tcp-nestjs
       - task: nginx-tcp-nestjs
-      - task: caddy-tcp-nestjs
+#      - task: caddy-tcp-nestjs
       - rye run python ./scripts/summarize.py
