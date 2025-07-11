@@ -2,7 +2,7 @@ from locust import HttpUser, task
 
 
 class User(HttpUser):
-    host = "http://localhost:8083"
+    host = "http://localhost:8080"
 
     @task
     def access(self):
