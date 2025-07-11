@@ -64,6 +64,10 @@ def main():
         "nginx_tcp_nestjs.py",
         # "caddy_tcp_nestjs.py",
         "bare_tcp_nestjs.py",
+        # typescript: express
+        "nginx_tcp_express.py",
+        # "caddy_tcp_express.py",
+        "bare_tcp_express.py",
     ]
     paths = [base_path.format(locustfile=l) for l in locustfiles]
     dfs = []

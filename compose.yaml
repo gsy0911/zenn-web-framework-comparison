@@ -9,6 +9,7 @@ services:
       FASTAPI_API_SERVER_ADDRESS: "fastapi-tcp:8080"
       FLASK_API_SERVER_ADDRESS: "flask-tcp:8080"
       NESTJS_API_SERVER_ADDRESS: "nestjs-tcp:8080"
+      EXPRESS_API_SERVER_ADDRESS: "express-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
@@ -83,6 +84,19 @@ services:
       PREFIX: "/nestjs-tcp/v1"
     volumes:
       - "./src:/opt/app/src"
+
+  express-tcp:
+    container_name: express-tcp
+    build:
+      context: ./typescript/express
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8080"
+    tty: true
+    environment:
+      PREFIX: "/express-tcp/v1"
+    volumes:
+      - "./typescript/express/src:/opt/app/src"
 
 volumes:
   fastapi_socket:
