@@ -1,4 +1,5 @@
 {$SERVER_NAME:localhost} {
     tls ./localhost.pem ./localhost-key.pem
     reverse_proxy /fastapi-tcp/* {$FASTAPI_API_SERVER_ADDRESS}
+    reverse_proxy /nestjs-tcp/* {$NESTJS_API_SERVER_ADDRESS}
 }

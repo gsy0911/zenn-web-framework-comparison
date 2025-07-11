@@ -8,6 +8,7 @@ services:
       SERVER_NAME: "https://localhost"
       FASTAPI_API_SERVER_ADDRESS: "fastapi-tcp:8080"
       FLASK_API_SERVER_ADDRESS: "flask-tcp:8080"
+      NESTJS_API_SERVER_ADDRESS: "nestjs-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
@@ -23,6 +24,7 @@ services:
     volumes:
       - "fastapi_socket:/tmp/fastapi"
       - "flask_socket:/tmp/flask"
+      - "nestjs_socket:/tmp/nestjs"
       - "./ssl:/etc/nginx/ssl"
 
   fastapi-uds:
@@ -69,6 +71,21 @@ services:
       - "./python/flask/src:/opt/app/src"
     command: gunicorn main:app --bind 0.0.0.0:8080
 
+  nestjs-tcp:
+    container_name: nestjs-tcp
+    build:
+      context: .
+      dockerfile: typescript/nestjs/Dockerfile
+    ports:
+      - "8082:8080"
+    tty: true
+    environment:
+      PREFIX: "/nestjs-tcp/v1"
+    volumes:
+      - "./typescript/nestjs/src:/opt/app/src"
+      - "./typescript/nestjs/dist:/opt/app/dist"
+
 volumes:
   fastapi_socket:
   flask_socket:
+  nestjs_socket:
