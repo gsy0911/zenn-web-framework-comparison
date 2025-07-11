@@ -56,6 +56,7 @@ def main():
         "nginx_tcp_fastapi.py",
         "caddy_tcp_fastapi.py",
         "bare_tcp_fastapi.py",
+        "bare_tcp_flask.py",
     ]
     paths = [base_path.format(locustfile=l) for l in locustfiles]
     dfs = []
