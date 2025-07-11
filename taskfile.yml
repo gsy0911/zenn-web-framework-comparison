@@ -56,6 +56,30 @@ tasks:
         vars:
           locustfile: "bare_tcp_flask.py"
 
+  bare-tcp-nestjs:
+    desc: nestjs - tcp; e.g. $ task nestjs-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "bare_tcp_nestjs.py"
+
+  nginx-tcp-nestjs:
+    desc: nestjs - nginx tcp; e.g. $ task nginx-tcp-nestjs
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "nginx_tcp_nestjs.py"
+
+  caddy-tcp-nestjs:
+    desc: nestjs - caddy tcp; e.g. $ task caddy-tcp-nestjs
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "caddy_tcp_nestjs.py"
+
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
     cmds:
@@ -64,4 +88,7 @@ tasks:
       - task: nginx-tcp-fastapi
       - task: caddy-tcp-fastapi
       - task: bare-tcp-flask
+      - task: bare-tcp-nestjs
+      - task: nginx-tcp-nestjs
+      - task: caddy-tcp-nestjs
       - rye run python ./scripts/summarize.py
