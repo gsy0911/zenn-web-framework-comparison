@@ -81,7 +81,6 @@ services:
     tty: true
     environment:
       PREFIX: "/nestjs-tcp/v1"
-    platform: linux/arm64
     volumes:
       - "./typescript/nestjs/src:/opt/app/src"
       - "./typescript/nestjs/dist:/opt/app/dist"

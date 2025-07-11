@@ -1,33 +1,21 @@
-FROM node:18-bullseye AS builder
+FROM node:18-alpine
 
 WORKDIR /opt/app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files from the nestjs directory
+COPY typescript/nestjs/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy source code
-COPY . .
+# Copy source code from the nestjs directory
+COPY typescript/nestjs/ .
 
 # Build the application
 RUN npm run build
 
-# Production stage
-FROM node:18-bullseye-slim AS production
-
-WORKDIR /opt/app
-
-# Install only production dependencies
-COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
-
-# Copy built application from builder stage
-COPY --from=builder /opt/app/dist ./dist
-
 # Create non-root user
-RUN useradd -m nestjsuser
+RUN adduser -D nestjsuser
 RUN mkdir -p /opt/app/tmp \
  && chown -R nestjsuser:nestjsuser /opt/app/tmp \
  && chmod -R 777 /opt/app/tmp
