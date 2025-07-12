@@ -1,1 +1,0 @@
-/home/runner/work/zenn-web-framework-comparison/zenn-web-framework-comparison/rust/rocket/target/release/rocket-app: /home/runner/work/zenn-web-framework-comparison/zenn-web-framework-comparison/rust/rocket/src/main.rs
