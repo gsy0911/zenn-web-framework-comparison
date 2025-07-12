@@ -203,6 +203,33 @@ rye run format
 rye run locust -f ./locust/bare_tcp_fastapi.py --users 100 --spawn-rate 10 --headless --run-time 30s
 ```
 
+### Testing with GitHub Actions
+
+This project includes a comprehensive GitHub Actions CI/CD workflow that automatically:
+
+- 🐳 Starts all Docker Compose services
+- 🔍 Tests endpoint connectivity for all web frameworks
+- 🔐 Validates HTTPS proxy configurations
+- 📊 Provides detailed logging and debugging information
+
+The workflow runs automatically on push to `main`/`develop` branches and pull requests.
+
+#### Manual Endpoint Testing
+
+You can test endpoint connectivity locally using the provided script:
+
+```bash
+# Start services first
+docker compose up -d
+# Or for CI compatibility:
+docker compose -f compose.yaml -f compose.ci.yml up -d
+
+# Test all endpoints
+./scripts/test-endpoints.sh
+```
+
+See [`.github/README.md`](.github/README.md) for detailed documentation of the CI/CD workflow.
+
 ### Adding New Configurations
 
 1. Create a new Docker service in `compose.yaml`
