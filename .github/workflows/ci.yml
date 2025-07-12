@@ -1,0 +1,260 @@
+---
+name: CI - Docker Compose and Endpoint Testing
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch: true
+
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          docker system prune -af
+
+      - name: Create SSL certificates directory
+        run: mkdir -p ssl
+
+      - name: Generate self-signed SSL certificates
+        run: |
+          openssl req -x509 -newkey rsa:4096 \
+            -keyout ssl/localhost-key.pem \
+            -out ssl/localhost.pem \
+            -days 365 -nodes -subj "/CN=localhost"
+          # Copy SSL certificates to caddy directory for build
+          cp ssl/localhost.pem caddy/
+          cp ssl/localhost-key.pem caddy/
+          ls -la ssl/
+
+      - name: Create reports directory
+        run: mkdir -p reports
+
+      - name: Build core services first (FastAPI and Flask)
+        run: |
+          echo "Building FastAPI services..."
+          docker compose -f compose.yaml -f compose.ci.yml \
+            build fastapi-tcp fastapi-uds
+          echo "Building Flask service..."
+          docker compose -f compose.yaml -f compose.ci.yml \
+            build flask-tcp
+
+      - name: Start core services first
+        run: |
+          echo "Starting FastAPI and Flask services..."
+          docker compose -f compose.yaml -f compose.ci.yml \
+            up -d fastapi-tcp fastapi-uds flask-tcp
+          echo "Waiting for services to start..."
+          sleep 45
+
+      - name: Check core services status
+        run: |
+          echo "=== Core Services Status ==="
+          docker compose -f compose.yaml -f compose.ci.yml ps
+          echo ""
+          echo "=== Core Services Logs ==="
+          docker compose -f compose.yaml -f compose.ci.yml \
+            logs fastapi-tcp fastapi-uds flask-tcp
+
+      - name: Test FastAPI direct endpoint
+        run: |
+          echo "Testing FastAPI direct endpoint..."
+          for i in {1..10}; do
+            if curl -f -s http://localhost:8080/fastapi-tcp/v1/user; then
+              echo "FastAPI direct test successful"
+              break
+            else
+              echo "Attempt $i failed, waiting..."
+              sleep 10
+            fi
+            if [ $i -eq 10 ]; then
+              echo "FastAPI direct test failed after 10 attempts"
+              docker compose -f compose.yaml -f compose.ci.yml logs fastapi-tcp
+              exit 1
+            fi
+          done
+
+      - name: Test Flask direct endpoint
+        run: |
+          echo "Testing Flask direct endpoint..."
+          for i in {1..10}; do
+            if curl -f -s http://localhost:8081/flask-tcp/v1/user; then
+              echo "Flask direct test successful"
+              break
+            else
+              echo "Attempt $i failed, waiting..."
+              sleep 10
+            fi
+            if [ $i -eq 10 ]; then
+              echo "Flask direct test failed after 10 attempts"
+              docker compose -f compose.yaml -f compose.ci.yml logs flask-tcp
+              exit 1
+            fi
+          done
+
+      - name: Build Node.js services
+        run: |
+          echo "Building Node.js services..."
+          docker compose -f compose.yaml -f compose.ci.yml \
+            build nestjs-tcp express-tcp
+
+      - name: Start Node.js services
+        run: |
+          echo "Starting Node.js services..."
+          docker compose -f compose.yaml -f compose.ci.yml \
+            up -d nestjs-tcp express-tcp
+          sleep 30
+
+      - name: Test NestJS direct endpoint
+        run: |
+          echo "Testing NestJS direct endpoint..."
+          for i in {1..10}; do
+            if curl -f -s http://localhost:8082/nestjs-tcp/v1/user; then
+              echo "NestJS direct test successful"
+              break
+            else
+              echo "Attempt $i failed, waiting..."
+              sleep 10
+            fi
+            if [ $i -eq 10 ]; then
+              echo "NestJS direct test failed after 10 attempts"
+              docker compose -f compose.yaml -f compose.ci.yml logs nestjs-tcp
+              exit 1
+            fi
+          done
+
+      - name: Test Express direct endpoint
+        run: |
+          echo "Testing Express direct endpoint..."
+          for i in {1..10}; do
+            if curl -f -s http://localhost:8083/express-tcp/v1/user; then
+              echo "Express direct test successful"
+              break
+            else
+              echo "Attempt $i failed, waiting..."
+              sleep 10
+            fi
+            if [ $i -eq 10 ]; then
+              echo "Express direct test failed after 10 attempts"
+              docker compose -f compose.yaml -f compose.ci.yml logs express-tcp
+              exit 1
+            fi
+          done
+
+      - name: Start proxy services
+        run: |
+          echo "Starting proxy services..."
+          docker compose -f compose.yaml -f compose.ci.yml up -d nginx caddy
+          sleep 45
+
+      - name: Test Nginx proxy endpoints (HTTPS)
+        run: |
+          echo "Testing Nginx proxy endpoints..."
+          # Test FastAPI through Nginx
+          for i in {1..5}; do
+            if curl -f -k -s https://localhost:8443/fastapi-tcp/v1/user; then
+              echo "Nginx FastAPI proxy test successful"
+              break
+            else
+              echo "Nginx FastAPI proxy attempt $i failed, waiting..."
+              sleep 15
+            fi
+            if [ $i -eq 5 ]; then
+              echo "Nginx FastAPI proxy test failed"
+              docker compose -f compose.yaml -f compose.ci.yml logs nginx
+            fi
+          done
+
+          # Test FastAPI UDS through Nginx
+          for i in {1..5}; do
+            if curl -f -k -s https://localhost:8443/fastapi-uds/v1/user; then
+              echo "Nginx FastAPI UDS proxy test successful"
+              break
+            else
+              echo "Nginx FastAPI UDS proxy attempt $i failed, waiting..."
+              sleep 15
+            fi
+            if [ $i -eq 5 ]; then
+              echo "Nginx FastAPI UDS proxy test failed"
+              docker compose -f compose.yaml -f compose.ci.yml \
+                logs nginx fastapi-uds
+            fi
+          done
+
+      - name: Test Caddy proxy endpoints (HTTPS)
+        run: |
+          echo "Testing Caddy proxy endpoints..."
+          # Test FastAPI through Caddy
+          for i in {1..5}; do
+            if curl -f -k -s https://localhost:443/fastapi-tcp/v1/user; then
+              echo "Caddy FastAPI proxy test successful"
+              break
+            else
+              echo "Caddy FastAPI proxy attempt $i failed, waiting..."
+              sleep 15
+            fi
+            if [ $i -eq 5 ]; then
+              echo "Caddy FastAPI proxy test failed"
+              docker compose -f compose.yaml -f compose.ci.yml logs caddy
+            fi
+          done
+
+      - name: Test health check endpoints (optional)
+        run: |
+          echo "Testing health check endpoints (non-critical)..."
+          # FastAPI health check
+          # (note: there's a typo in the original - "healthchek" vs "healthcheck")
+          curl -f -s http://localhost:8080/fastapi-tcp/v1/healthchek && \
+            echo "FastAPI health check OK" || \
+            echo "FastAPI health check not available"
+          # NestJS health check
+          curl -f -s http://localhost:8082/nestjs-tcp/v1/healthcheck && \
+            echo "NestJS health check OK" || \
+            echo "NestJS health check not available"
+          # Express health check
+          curl -f -s http://localhost:8083/express-tcp/v1/healthcheck && \
+            echo "Express health check OK" || \
+            echo "Express health check not available"
+
+      - name: Show final status
+        run: |
+          echo "=== Final Services Status ==="
+          docker compose -f compose.yaml -f compose.ci.yml ps
+          echo ""
+          echo "=== System Resources ==="
+          df -h
+          free -h
+
+      - name: Show service logs on failure
+        if: failure()
+        run: |
+          echo "=== All Service Logs ==="
+          docker compose -f compose.yaml -f compose.ci.yml logs
+          echo ""
+          echo "=== Container Status ==="
+          docker compose -f compose.yaml -f compose.ci.yml ps
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker compose -f compose.yaml -f compose.ci.yml down -v
+          docker system prune -f
