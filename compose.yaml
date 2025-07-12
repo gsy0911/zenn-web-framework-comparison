@@ -10,6 +10,7 @@ services:
       FLASK_API_SERVER_ADDRESS: "flask-tcp:8080"
       NESTJS_API_SERVER_ADDRESS: "nestjs-tcp:8080"
       EXPRESS_API_SERVER_ADDRESS: "express-tcp:8080"
+      ROCKET_API_SERVER_ADDRESS: "rocket-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
@@ -97,6 +98,17 @@ services:
       PREFIX: "/express-tcp/v1"
     volumes:
       - "./typescript/express/src:/opt/app/src"
+
+  rocket-tcp:
+    container_name: rocket-tcp
+    build:
+      context: ./rust/rocket
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8080"
+    tty: true
+    environment:
+      PREFIX: "/rocket-tcp/v1"
 
 volumes:
   fastapi_socket:

@@ -3,4 +3,5 @@
     reverse_proxy /fastapi-tcp/* {$FASTAPI_API_SERVER_ADDRESS}
     reverse_proxy /nestjs-tcp/* {$NESTJS_API_SERVER_ADDRESS}
     reverse_proxy /express-tcp/* {$EXPRESS_API_SERVER_ADDRESS}
+    reverse_proxy /rocket-tcp/* {$ROCKET_API_SERVER_ADDRESS}
 }
