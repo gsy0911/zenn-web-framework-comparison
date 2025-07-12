@@ -1,0 +1,15 @@
+services:
+  fastapi-uds:
+    platform: linux/amd64
+    
+  fastapi-tcp:
+    platform: linux/amd64
+    
+  flask-tcp:
+    platform: linux/amd64
+    
+  nestjs-tcp:
+    platform: linux/amd64
+    
+  express-tcp:
+    platform: linux/amd64
