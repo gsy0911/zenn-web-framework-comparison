@@ -80,6 +80,30 @@ tasks:
         vars:
           locustfile: "caddy_tcp_nestjs.py"
 
+  bare-tcp-express:
+    desc: express - tcp; e.g. $ task express-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "bare_tcp_express.py"
+
+  nginx-tcp-express:
+    desc: express - nginx tcp; e.g. $ task nginx-tcp-express
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "nginx_tcp_express.py"
+
+  caddy-tcp-express:
+    desc: express - caddy tcp; e.g. $ task caddy-tcp-express
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "caddy_tcp_express.py"
+
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
     cmds:
@@ -90,5 +114,8 @@ tasks:
       - task: bare-tcp-flask
       - task: bare-tcp-nestjs
       - task: nginx-tcp-nestjs
+      - task: bare-tcp-express
+      - task: nginx-tcp-express
 #      - task: caddy-tcp-nestjs
+#      - task: caddy-tcp-express
       - rye run python ./scripts/summarize.py
