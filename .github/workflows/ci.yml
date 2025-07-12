@@ -117,11 +117,24 @@ jobs:
           docker compose -f compose.yaml -f compose.ci.yml \
             build nestjs-tcp express-tcp
 
+      - name: Build Rust services
+        run: |
+          echo "Building Rust services..."
+          docker compose -f compose.yaml -f compose.ci.yml \
+            build rocket-tcp
+
       - name: Start Node.js services
         run: |
           echo "Starting Node.js services..."
           docker compose -f compose.yaml -f compose.ci.yml \
             up -d nestjs-tcp express-tcp
+          sleep 30
+
+      - name: Start Rust services
+        run: |
+          echo "Starting Rust services..."
+          docker compose -f compose.yaml -f compose.ci.yml \
+            up -d rocket-tcp
           sleep 30
 
       - name: Test NestJS direct endpoint
@@ -156,6 +169,24 @@ jobs:
             if [ $i -eq 10 ]; then
               echo "Express direct test failed after 10 attempts"
               docker compose -f compose.yaml -f compose.ci.yml logs express-tcp
+              exit 1
+            fi
+          done
+
+      - name: Test Rocket direct endpoint
+        run: |
+          echo "Testing Rocket direct endpoint..."
+          for i in {1..10}; do
+            if curl -f -s http://localhost:8084/rocket-tcp/v1/user; then
+              echo "Rocket direct test successful"
+              break
+            else
+              echo "Attempt $i failed, waiting..."
+              sleep 10
+            fi
+            if [ $i -eq 10 ]; then
+              echo "Rocket direct test failed after 10 attempts"
+              docker compose -f compose.yaml -f compose.ci.yml logs rocket-tcp
               exit 1
             fi
           done
@@ -200,6 +231,21 @@ jobs:
             fi
           done
 
+          # Test Rocket through Nginx
+          for i in {1..5}; do
+            if curl -f -k -s https://localhost:8443/rocket-tcp/v1/user; then
+              echo "Nginx Rocket proxy test successful"
+              break
+            else
+              echo "Nginx Rocket proxy attempt $i failed, waiting..."
+              sleep 15
+            fi
+            if [ $i -eq 5 ]; then
+              echo "Nginx Rocket proxy test failed"
+              docker compose -f compose.yaml -f compose.ci.yml logs nginx
+            fi
+          done
+
       - name: Test Caddy proxy endpoints (HTTPS)
         run: |
           echo "Testing Caddy proxy endpoints..."
@@ -214,6 +260,21 @@ jobs:
             fi
             if [ $i -eq 5 ]; then
               echo "Caddy FastAPI proxy test failed"
+              docker compose -f compose.yaml -f compose.ci.yml logs caddy
+            fi
+          done
+
+          # Test Rocket through Caddy
+          for i in {1..5}; do
+            if curl -f -k -s https://localhost:443/rocket-tcp/v1/user; then
+              echo "Caddy Rocket proxy test successful"
+              break
+            else
+              echo "Caddy Rocket proxy attempt $i failed, waiting..."
+              sleep 15
+            fi
+            if [ $i -eq 5 ]; then
+              echo "Caddy Rocket proxy test failed"
               docker compose -f compose.yaml -f compose.ci.yml logs caddy
             fi
           done
@@ -234,6 +295,10 @@ jobs:
           curl -f -s http://localhost:8083/express-tcp/v1/healthcheck && \
             echo "Express health check OK" || \
             echo "Express health check not available"
+          # Rocket health check
+          curl -f -s http://localhost:8084/rocket-tcp/v1/healthcheck && \
+            echo "Rocket health check OK" || \
+            echo "Rocket health check not available"
 
       - name: Show final status
         run: |
