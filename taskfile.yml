@@ -104,6 +104,30 @@ tasks:
         vars:
           locustfile: "caddy_tcp_express.py"
 
+  bare-tcp-rocket:
+    desc: rocket - tcp; e.g. $ task rocket-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "bare_tcp_rocket.py"
+
+  nginx-tcp-rocket:
+    desc: rocket - nginx tcp; e.g. $ task nginx-tcp-rocket
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "nginx_tcp_rocket.py"
+
+  caddy-tcp-rocket:
+    desc: rocket - caddy tcp; e.g. $ task caddy-tcp-rocket
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "caddy_tcp_rocket.py"
+
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
     cmds:
@@ -116,6 +140,9 @@ tasks:
       - task: nginx-tcp-nestjs
       - task: bare-tcp-express
       - task: nginx-tcp-express
+      - task: bare-tcp-rocket
+      - task: nginx-tcp-rocket
 #      - task: caddy-tcp-nestjs
 #      - task: caddy-tcp-express
+#      - task: caddy-tcp-rocket
       - rye run python ./scripts/summarize.py
