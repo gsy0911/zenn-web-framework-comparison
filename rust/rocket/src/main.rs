@@ -34,10 +34,11 @@ fn rocket() -> _ {
     
     if prefix.is_empty() {
         routes.extend(routes![get_user, healthcheck]);
+        rocket::custom(config)
+            .mount("/", routes)
     } else {
         routes.extend(routes![get_user, healthcheck]);
+        rocket::custom(config)
+            .mount(&prefix, routes)
     }
-
-    rocket::custom(config)
-        .mount(&prefix, routes)
 }
