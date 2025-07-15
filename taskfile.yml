@@ -12,7 +12,7 @@ tasks:
     internal: true
     cmds:
       - |
-        rye run locust -f ./locust/{{.locustfile}} \
+        HOST={{.host}} URL={{.url}} rye run locust -f ./locust/{{.locustfile}} \
         --users 512 --spawn-rate 64 --csv ./reports/{{.locustfile}} \
         --headless --only-summary --run-time 1m --processes 4
 
@@ -110,7 +110,9 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "bare_tcp_rocket.py"
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8084
+          url: /rocket-tcp/v1/user
 
   nginx-tcp-rocket:
     desc: rocket - nginx tcp; e.g. $ task nginx-tcp-rocket
@@ -118,7 +120,9 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "nginx_tcp_rocket.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /rocket-tcp/v1/user
 
   caddy-tcp-rocket:
     desc: rocket - caddy tcp; e.g. $ task caddy-tcp-rocket
@@ -126,7 +130,9 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "caddy_tcp_rocket.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:443
+          url: /rocket-tcp/v1/user
 
   benchmark-all:
     desc: all; e.g. $ task benchmark-all

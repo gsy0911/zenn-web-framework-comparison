@@ -1,13 +1,16 @@
 from locust import HttpUser, task
+import os
 
+HOST = os.environ['HOST']
+URL = os.environ['URL']
 
 class User(HttpUser):
-    host = "http://localhost:8084"
+    host = HOST
 
     @task
     def access(self):
         _ = self.client.get(
-            url="/rocket-tcp/v1/user",
+            url=URL,
             verify=False,
             headers={"Keep-Alive": "timeout=5, max=1000"},
             # verify="./ssl/localhost.pem",
