@@ -7,10 +7,11 @@ A comprehensive benchmark comparison project that evaluates FastAPI performance 
 ```mermaid
 xychart-beta horizontal
     title "Web Framework Benchmark"
-    x-axis [bare_tcp_rocket, bare_tcp_nestjs, bare_tcp_flask, nginx_tcp_rocket, bare_tcp_fastapi, caddy_tcp_fastapi, nginx_uds_fastapi, nginx_tcp_fastapi, nginx_tcp_nestjs]
+    x-axis [rust_rocket_none_tcp, typescript_express_none_tcp, typescript_nestjs_none_tcp, python_flask_none_tcp, rust_rocket_nginx_tcp, typescript_nestjs_nginx_tcp, typescript_express_nginx_tcp, python_fastapi_nginx_tcp, python_fastapi_nginx_uds]
     y-axis "Requests per sec (higher is better)" 1000 --> 15000
-    bar [14371, 8511, 4454, 3522, 3478, 2613, 1908, 1019, 921]
+    bar [13961, 8845, 8530, 7882, 4183, 4073, 3122, 2750, 1872]
 ```
+
 ## 🎯 Project Overview
 
 This project compares the performance of FastAPI web applications under four different configurations:

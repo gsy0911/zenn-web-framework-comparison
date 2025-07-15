@@ -1,5 +1,6 @@
 import pandas as pd
 from pydantic import BaseModel, Field
+import itertools
 
 
 class LocustStats(BaseModel):
@@ -50,33 +51,29 @@ xychart-beta horizontal
 
 
 def main():
-    base_path = "./reports/{locustfile}_stats.csv"
-    locustfiles = [
-        # python: fastapi
-        "nginx_uds_fastapi.py",
-        "nginx_tcp_fastapi.py",
-        "caddy_tcp_fastapi.py",
-        "bare_tcp_fastapi.py",
-        # python: flask
-        "bare_tcp_flask.py",
-        # typescript: nestjs
-        # "nginx_uds_nestjs.py",
-        "nginx_tcp_nestjs.py",
-        # "caddy_tcp_nestjs.py",
-        "bare_tcp_nestjs.py",
-        # typescript: express
-        # "nginx_tcp_express.py",
-        # "caddy_tcp_express.py",
-        # "bare_tcp_express.py",
-        "bare_tcp_rocket.py",
-        "nginx_tcp_rocket.py",
+    base_path = "./reports/{language_framework}_{proxy_protocol}_stats.csv"
+    languages_frameworks = [
+        "python_fastapi",
+        "python_flask",
+        "rust_rocket",
+        "rust_warp",
+        "typescript_express",
+        "typescript_nestjs"
     ]
-    paths = [base_path.format(locustfile=l) for l in locustfiles]
+    proxy_protocols = ["none_tcp", "nginx_tcp", "nginx_uds", "caddy_tcp"]
+    paths = []
+    for language_framework, proxy_protocol in itertools.product(languages_frameworks, proxy_protocols):
+        paths.append(base_path.format(language_framework=language_framework, proxy_protocol=proxy_protocol))
+
     dfs = []
     for p in paths:
-        df = pd.read_csv(p)
-        df["locustfile"] = p.rsplit("/", 1)[1].split(".py", 1)[0]
-        dfs.append(df)
+        try:
+            df = pd.read_csv(p)
+            df["locustfile"] = p.rsplit("/", 1)[1].split("_stats.csv", 1)[0]
+            dfs.append(df)
+        except:
+            print(f"FILE NOT FOUND: {p}")
+            continue
 
     df = pd.concat(dfs)
 

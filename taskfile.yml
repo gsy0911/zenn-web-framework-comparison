@@ -12,9 +12,15 @@ tasks:
     internal: true
     cmds:
       - |
-        HOST={{.host}} URL={{.url}} rye run locust -f ./locust/{{.locustfile}} \
-        --users 512 --spawn-rate 64 --csv ./reports/{{.locustfile}} \
-        --headless --only-summary --run-time 1m --processes 4
+        HOST={{.host}} URL={{.url}} \
+        rye run locust -f ./locust/{{.locustfile}} \
+        --users 512 \
+        --spawn-rate 64 \
+        --csv ./reports/{{.language}}_{{.framework}}_{{.proxy}}_{{.protocol}} \
+        --headless \
+        --only-summary \
+        --run-time 1m \
+        --processes 4
 
   nginx-uds-fastapi:
     desc: fastapi - uds; e.g. $ task fastapi-uds
@@ -25,6 +31,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:8443
           url: /fastapi-uds/v1/user
+          language: python
+          framework: fastapi
+          proxy: nginx
+          protocol: uds
 
   nginx-tcp-fastapi:
     desc: fastapi - tcp; e.g. $ task fastapi-tcp
@@ -35,6 +45,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:8443
           url: /fastapi-tcp/v1/user
+          language: python
+          framework: fastapi
+          proxy: nginx
+          protocol: tcp
 
   caddy-tcp-fastapi:
     desc: fastapi - caddy tcp; e.g. $ task caddy-tcp-fastapi
@@ -45,6 +59,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost
           url: /fastapi-tcp/v1/user
+          language: python
+          framework: fastapi
+          proxy: caddy
+          protocol: tcp
 
   bare-tcp-fastapi:
     desc: fastapi - tcp; e.g. $ task bare-tcp-fastapi
@@ -55,6 +73,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: http://localhost:8080
           url: /fastapi-tcp/v1/user
+          language: python
+          framework: fastapi
+          proxy: none
+          protocol: tcp
 
   bare-tcp-flask:
     desc: flask - tcp; e.g. $ task bare-tcp-flask
@@ -65,6 +87,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: http://localhost:8081
           url: /flask-tcp/v1/user
+          language: python
+          framework: flask
+          proxy: none
+          protocol: tcp
 
   bare-tcp-nestjs:
     desc: nestjs - tcp; e.g. $ task bare-tcp-nestjs
@@ -75,6 +101,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: http://localhost:8082
           url: /nestjs-tcp/v1/user
+          language: typescript
+          framework: nestjs
+          proxy: none
+          protocol: tcp
 
   nginx-tcp-nestjs:
     desc: nestjs - nginx tcp; e.g. $ task nginx-tcp-nestjs
@@ -85,6 +115,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:8443
           url: /nestjs-tcp/v1/user
+          language: typescript
+          framework: nestjs
+          proxy: nginx
+          protocol: tcp
 
   caddy-tcp-nestjs:
     desc: nestjs - caddy tcp; e.g. $ task caddy-tcp-nestjs
@@ -95,6 +129,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:443
           url: /nestjs-tcp/v1/user
+          language: typescript
+          framework: nestjs
+          proxy: caddy
+          protocol: tcp
 
   bare-tcp-express:
     desc: express - tcp; e.g. $ task bare-tcp-express
@@ -105,6 +143,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: http://localhost:8083
           url: /express-tcp/v1/user
+          language: typescript
+          framework: express
+          proxy: none
+          protocol: tcp
 
   nginx-tcp-express:
     desc: express - nginx tcp; e.g. $ task nginx-tcp-express
@@ -115,6 +157,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:8443
           url: /express-tcp/v1/user
+          language: typescript
+          framework: express
+          proxy: nginx
+          protocol: tcp
 
   caddy-tcp-express:
     desc: express - caddy tcp; e.g. $ task caddy-tcp-express
@@ -125,6 +171,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:443
           url: /express-tcp/v1/user
+          language: typescript
+          framework: express
+          proxy: caddy
+          protocol: tcp
 
   bare-tcp-rocket:
     desc: rocket - tcp; e.g. $ task rocket-tcp
@@ -135,6 +185,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: http://localhost:8084
           url: /rocket-tcp/v1/user
+          language: rust
+          framework: rocket
+          proxy: none
+          protocol: tcp
 
   nginx-tcp-rocket:
     desc: rocket - nginx tcp; e.g. $ task nginx-tcp-rocket
@@ -145,6 +199,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:8443
           url: /rocket-tcp/v1/user
+          language: rust
+          framework: rocket
+          proxy: nginx
+          protocol: tcp
 
   caddy-tcp-rocket:
     desc: rocket - caddy tcp; e.g. $ task caddy-tcp-rocket
@@ -155,6 +213,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:443
           url: /rocket-tcp/v1/user
+          language: rust
+          framework: rocket
+          proxy: caddy
+          protocol: tcp
 
   bare-tcp-warp:
     desc: warp - tcp; e.g. $ task warp-tcp
@@ -165,6 +227,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: http://localhost:8085
           url: /warp-tcp/v1/user
+          language: rust
+          framework: warp
+          proxy: none
+          protocol: tcp
 
   nginx-tcp-warp:
     desc: warp - nginx tcp; e.g. $ task nginx-tcp-warp
@@ -175,6 +241,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:8443
           url: /warp-tcp/v1/user
+          language: rust
+          framework: warp
+          proxy: nginx
+          protocol: tcp
 
   caddy-tcp-warp:
     desc: warp - caddy tcp; e.g. $ task caddy-tcp-warp
@@ -185,6 +255,10 @@ tasks:
           locustfile: "api_v1_user.py"
           host: https://localhost:443
           url: /warp-tcp/v1/user
+          language: rust
+          framework: warp
+          proxy: caddy
+          protocol: tcp
 
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
