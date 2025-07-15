@@ -9,9 +9,8 @@ xychart-beta horizontal
     title "Web Framework Benchmark"
     x-axis [bare_tcp_rocket, bare_tcp_nestjs, bare_tcp_flask, nginx_tcp_rocket, bare_tcp_fastapi, caddy_tcp_fastapi, nginx_uds_fastapi, nginx_tcp_fastapi, nginx_tcp_nestjs]
     y-axis "Requests per sec (higher is better)" 1000 --> 15000
-    bar [14432, 8511, 4454, 3522, 3478, 2613, 1908, 1019, 921]
+    bar [14371, 8511, 4454, 3522, 3478, 2613, 1908, 1019, 921]
 ```
-
 ## 🎯 Project Overview
 
 This project compares the performance of FastAPI web applications under four different configurations:
