@@ -44,7 +44,7 @@ class XYChart(BaseModel):
 xychart-beta horizontal
     title "Web Framework Benchmark"
     x-axis [{", ".join(x_axis)}]
-    y-axis "Requests per sec (higher is better)" 1000 --> 5000
+    y-axis "Requests per sec (higher is better)" 1000 --> 15000
     bar [{", ".join(bar)}]
 ```
 """
