@@ -22,47 +22,59 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "nginx_uds_fastapi.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /fastapi-uds/v1/user
 
   nginx-tcp-fastapi:
-    desc: fastapi - uds; e.g. $ task fastapi-tcp
+    desc: fastapi - tcp; e.g. $ task fastapi-tcp
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "nginx_tcp_fastapi.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /fastapi-tcp/v1/user
 
   caddy-tcp-fastapi:
-    desc: fastapi - uds; e.g. $ task fastapi-tcp
+    desc: fastapi - caddy tcp; e.g. $ task caddy-tcp-fastapi
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "caddy_tcp_fastapi.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost
+          url: /fastapi-tcp/v1/user
 
   bare-tcp-fastapi:
-    desc: fastapi - uds; e.g. $ task fastapi-tcp
+    desc: fastapi - tcp; e.g. $ task bare-tcp-fastapi
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "bare_tcp_fastapi.py"
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8080
+          url: /fastapi-tcp/v1/user
 
   bare-tcp-flask:
-    desc: fastapi - uds; e.g. $ task flask-tcp
+    desc: flask - tcp; e.g. $ task bare-tcp-flask
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "bare_tcp_flask.py"
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8081
+          url: /flask-tcp/v1/user
 
   bare-tcp-nestjs:
-    desc: nestjs - tcp; e.g. $ task nestjs-tcp
+    desc: nestjs - tcp; e.g. $ task bare-tcp-nestjs
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "bare_tcp_nestjs.py"
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8082
+          url: /nestjs-tcp/v1/user
 
   nginx-tcp-nestjs:
     desc: nestjs - nginx tcp; e.g. $ task nginx-tcp-nestjs
@@ -70,7 +82,9 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "nginx_tcp_nestjs.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /nestjs-tcp/v1/user
 
   caddy-tcp-nestjs:
     desc: nestjs - caddy tcp; e.g. $ task caddy-tcp-nestjs
@@ -78,15 +92,19 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "caddy_tcp_nestjs.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:443
+          url: /nestjs-tcp/v1/user
 
   bare-tcp-express:
-    desc: express - tcp; e.g. $ task express-tcp
+    desc: express - tcp; e.g. $ task bare-tcp-express
     internal: true
     cmds:
       - task: locust
         vars:
-          locustfile: "bare_tcp_express.py"
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8083
+          url: /express-tcp/v1/user
 
   nginx-tcp-express:
     desc: express - nginx tcp; e.g. $ task nginx-tcp-express
@@ -94,7 +112,9 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "nginx_tcp_express.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /express-tcp/v1/user
 
   caddy-tcp-express:
     desc: express - caddy tcp; e.g. $ task caddy-tcp-express
@@ -102,7 +122,9 @@ tasks:
     cmds:
       - task: locust
         vars:
-          locustfile: "caddy_tcp_express.py"
+          locustfile: "api_v1_user.py"
+          host: https://localhost:443
+          url: /express-tcp/v1/user
 
   bare-tcp-rocket:
     desc: rocket - tcp; e.g. $ task rocket-tcp
