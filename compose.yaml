@@ -11,6 +11,7 @@ services:
       NESTJS_API_SERVER_ADDRESS: "nestjs-tcp:8080"
       EXPRESS_API_SERVER_ADDRESS: "express-tcp:8080"
       ROCKET_API_SERVER_ADDRESS: "rocket-tcp:8080"
+      WARP_API_SERVER_ADDRESS: "warp-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
@@ -109,6 +110,17 @@ services:
     tty: true
     environment:
       PREFIX: "/rocket-tcp/v1"
+
+  warp-tcp:
+    container_name: warp-tcp
+    build:
+      context: ./rust/warp
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8080"
+    tty: true
+    environment:
+      PREFIX: "/warp-tcp/v1"
 
 volumes:
   fastapi_socket:

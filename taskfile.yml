@@ -156,6 +156,36 @@ tasks:
           host: https://localhost:443
           url: /rocket-tcp/v1/user
 
+  bare-tcp-warp:
+    desc: warp - tcp; e.g. $ task warp-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8085
+          url: /warp-tcp/v1/user
+
+  nginx-tcp-warp:
+    desc: warp - nginx tcp; e.g. $ task nginx-tcp-warp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /warp-tcp/v1/user
+
+  caddy-tcp-warp:
+    desc: warp - caddy tcp; e.g. $ task caddy-tcp-warp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:443
+          url: /warp-tcp/v1/user
+
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
     cmds:
@@ -170,6 +200,8 @@ tasks:
       - task: nginx-tcp-express
       - task: bare-tcp-rocket
       - task: nginx-tcp-rocket
+      - task: bare-tcp-warp
+      - task: nginx-tcp-warp
 #      - task: caddy-tcp-nestjs
 #      - task: caddy-tcp-express
 #      - task: caddy-tcp-rocket
