@@ -7,8 +7,9 @@ WORKDIR /opt/app
 COPY go.mod go.sum ./
 
 # Set environment variables to handle any SSL issues
-ENV GOPROXY=https://proxy.golang.org,direct
-ENV GOSUMDB=sum.golang.org
+ENV GOPROXY=direct
+ENV GOSUMDB=off
+ENV GO111MODULE=on
 
 # Download dependencies
 RUN go mod download
