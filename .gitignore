@@ -6,6 +6,10 @@ dist/
 wheels/
 *.egg-info
 
+# Go
+go/*/main
+go/*/*.exe
+
 # venv
 .venv
 

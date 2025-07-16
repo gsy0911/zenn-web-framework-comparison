@@ -12,6 +12,7 @@ services:
       EXPRESS_API_SERVER_ADDRESS: "express-tcp:8080"
       ROCKET_API_SERVER_ADDRESS: "rocket-tcp:8080"
       WARP_API_SERVER_ADDRESS: "warp-tcp:8080"
+      GIN_API_SERVER_ADDRESS: "gin-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
@@ -121,6 +122,17 @@ services:
     tty: true
     environment:
       PREFIX: "/warp-tcp/v1"
+
+  gin-tcp:
+    container_name: gin-tcp
+    build:
+      context: ./go/gin
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8080"
+    tty: true
+    environment:
+      PREFIX: "/gin-tcp/v1"
 
 volumes:
   fastapi_socket:
