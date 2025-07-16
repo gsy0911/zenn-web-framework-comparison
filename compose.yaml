@@ -13,6 +13,7 @@ services:
       ROCKET_API_SERVER_ADDRESS: "rocket-tcp:8080"
       WARP_API_SERVER_ADDRESS: "warp-tcp:8080"
       GIN_API_SERVER_ADDRESS: "gin-tcp:8080"
+      FIBER_API_SERVER_ADDRESS: "fiber-tcp:8080"
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
     ports:
@@ -133,6 +134,17 @@ services:
     tty: true
     environment:
       PREFIX: "/gin-tcp/v1"
+
+  fiber-tcp:
+    container_name: fiber-tcp
+    build:
+      context: ./go/fiber
+      dockerfile: Dockerfile
+    ports:
+      - "8087:8080"
+    tty: true
+    environment:
+      PREFIX: "/fiber-tcp/v1"
 
 volumes:
   fastapi_socket:

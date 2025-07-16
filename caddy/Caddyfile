@@ -6,4 +6,5 @@
     reverse_proxy /rocket-tcp/* {$ROCKET_API_SERVER_ADDRESS}
     reverse_proxy /warp-tcp/* {$WARP_API_SERVER_ADDRESS}
     reverse_proxy /gin-tcp/* {$GIN_API_SERVER_ADDRESS}
+    reverse_proxy /fiber-tcp/* {$FIBER_API_SERVER_ADDRESS}
 }
