@@ -67,7 +67,7 @@ fi
 # Test direct service endpoints
 echo "=== Testing Direct Service Endpoints (HTTP) ==="
 success_count=0
-total_tests=4
+total_tests=6
 
 if test_endpoint_with_response "http://localhost:8080/fastapi-tcp/v1/user" "FastAPI TCP"; then
     ((success_count++))
@@ -82,6 +82,14 @@ if test_endpoint_with_response "http://localhost:8082/nestjs-tcp/v1/user" "NestJ
 fi
 
 if test_endpoint_with_response "http://localhost:8083/express-tcp/v1/user" "Express TCP"; then
+    ((success_count++))
+fi
+
+if test_endpoint_with_response "http://localhost:8086/gin-tcp/v1/user" "Gin TCP"; then
+    ((success_count++))
+fi
+
+if test_endpoint_with_response "http://localhost:8087/fiber-tcp/v1/user" "Fiber TCP"; then
     ((success_count++))
 fi
 

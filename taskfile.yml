@@ -302,6 +302,48 @@ tasks:
           proxy: caddy
           protocol: tcp
 
+  bare-tcp-fiber:
+    desc: fiber - tcp; e.g. $ task fiber-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8087
+          url: /fiber-tcp/v1/user
+          language: go
+          framework: fiber
+          proxy: none
+          protocol: tcp
+
+  nginx-tcp-fiber:
+    desc: fiber - nginx tcp; e.g. $ task nginx-tcp-fiber
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /fiber-tcp/v1/user
+          language: go
+          framework: fiber
+          proxy: nginx
+          protocol: tcp
+
+  caddy-tcp-fiber:
+    desc: fiber - caddy tcp; e.g. $ task caddy-tcp-fiber
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:443
+          url: /fiber-tcp/v1/user
+          language: go
+          framework: fiber
+          proxy: caddy
+          protocol: tcp
+
   benchmark-all:
     desc: all; e.g. $ task benchmark-all
     cmds:
@@ -320,8 +362,11 @@ tasks:
       - task: nginx-tcp-warp
       - task: bare-tcp-gin
       - task: nginx-tcp-gin
+      - task: bare-tcp-fiber
+      - task: nginx-tcp-fiber
 #      - task: caddy-tcp-nestjs
 #      - task: caddy-tcp-express
 #      - task: caddy-tcp-rocket
 #      - task: caddy-tcp-gin
+#      - task: caddy-tcp-fiber
       - rye run python ./scripts/summarize.py
