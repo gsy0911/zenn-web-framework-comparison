@@ -42,3 +42,14 @@ The application is containerized and can be run using Docker:
 docker build -t fastify-app .
 docker run -p 8080:8080 -e PREFIX="/fastify-tcp/v1" fastify-app
 ```
+
+**Note**: If you encounter SSL certificate issues during `npm install` in Docker builds, you may need to configure NPM to use different registry settings or disable strict SSL verification for development environments.
+
+## Testing
+
+The implementation has been tested and verified to work correctly:
+
+1. **User endpoint**: Returns `{"status": "success"}` 
+2. **Health check endpoint**: Returns `{"status": "success"}`
+3. **CORS functionality**: Properly handles cross-origin requests
+4. **Environment variables**: Supports PREFIX configuration for URL routing
