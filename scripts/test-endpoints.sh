@@ -67,7 +67,7 @@ fi
 # Test direct service endpoints
 echo "=== Testing Direct Service Endpoints (HTTP) ==="
 success_count=0
-total_tests=6
+total_tests=7
 
 if test_endpoint_with_response "http://localhost:8080/fastapi-tcp/v1/user" "FastAPI TCP"; then
     ((success_count++))
@@ -82,6 +82,10 @@ if test_endpoint_with_response "http://localhost:8082/nestjs-tcp/v1/user" "NestJ
 fi
 
 if test_endpoint_with_response "http://localhost:8083/express-tcp/v1/user" "Express TCP"; then
+    ((success_count++))
+fi
+
+if test_endpoint_with_response "http://localhost:8088/fastify-tcp/v1/user" "Fastify TCP"; then
     ((success_count++))
 fi
 
@@ -121,9 +125,9 @@ echo "Proxy endpoints: $proxy_success/$proxy_total successful"
 echo
 echo "=== Testing Health Check Endpoints (Optional) ==="
 health_success=0
-health_total=3
+health_total=4
 
-if test_endpoint "http://localhost:8080/fastapi-tcp/v1/healthchek" "FastAPI Health Check" 1; then
+if test_endpoint "http://localhost:8080/fastapi-tcp/v1/healthcheck" "FastAPI Health Check" 1; then
     ((health_success++))
 fi
 
@@ -132,6 +136,10 @@ if test_endpoint "http://localhost:8082/nestjs-tcp/v1/healthcheck" "NestJS Healt
 fi
 
 if test_endpoint "http://localhost:8083/express-tcp/v1/healthcheck" "Express Health Check" 1; then
+    ((health_success++))
+fi
+
+if test_endpoint "http://localhost:8088/fastify-tcp/v1/healthcheck" "Fastify Health Check" 1; then
     ((health_success++))
 fi
 

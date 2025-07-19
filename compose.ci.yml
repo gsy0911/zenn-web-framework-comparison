@@ -14,5 +14,8 @@ services:
   express-tcp:
     platform: linux/amd64
     
+  fastify-tcp:
+    platform: linux/amd64
+    
   rocket-tcp:
     platform: linux/amd64

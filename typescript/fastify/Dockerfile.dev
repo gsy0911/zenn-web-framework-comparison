@@ -1,0 +1,31 @@
+FROM node:22-alpine
+
+WORKDIR /opt/app
+
+# Configure npm for potential SSL issues in development environments
+RUN npm config set strict-ssl false && \
+    npm config set registry http://registry.npmjs.org/ || true
+
+# Copy package files from the fastify directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --unsafe-perm
+
+# Copy source code from the fastify directory
+COPY ./ .
+
+# Build the application
+RUN npm run build
+
+# Create non-root user
+RUN adduser -D fastifyuser
+RUN mkdir -p /opt/app/tmp \
+ && chown -R fastifyuser:fastifyuser /opt/app/tmp \
+ && chmod -R 777 /opt/app/tmp
+
+USER fastifyuser
+
+EXPOSE 8080
+
+CMD ["npm", "run", "start:prod"]

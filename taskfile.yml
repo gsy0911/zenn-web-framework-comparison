@@ -176,6 +176,48 @@ tasks:
           proxy: caddy
           protocol: tcp
 
+  bare-tcp-fastify:
+    desc: fastify - tcp; e.g. $ task bare-tcp-fastify
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8088
+          url: /fastify-tcp/v1/user
+          language: typescript
+          framework: fastify
+          proxy: none
+          protocol: tcp
+
+  nginx-tcp-fastify:
+    desc: fastify - nginx tcp; e.g. $ task nginx-tcp-fastify
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /fastify-tcp/v1/user
+          language: typescript
+          framework: fastify
+          proxy: nginx
+          protocol: tcp
+
+  caddy-tcp-fastify:
+    desc: fastify - caddy tcp; e.g. $ task caddy-tcp-fastify
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:443
+          url: /fastify-tcp/v1/user
+          language: typescript
+          framework: fastify
+          proxy: caddy
+          protocol: tcp
+
   bare-tcp-rocket:
     desc: rocket - tcp; e.g. $ task rocket-tcp
     internal: true
@@ -356,6 +398,8 @@ tasks:
       - task: nginx-tcp-nestjs
       - task: bare-tcp-express
       - task: nginx-tcp-express
+      - task: bare-tcp-fastify
+      - task: nginx-tcp-fastify
       - task: bare-tcp-rocket
       - task: nginx-tcp-rocket
       - task: bare-tcp-warp
