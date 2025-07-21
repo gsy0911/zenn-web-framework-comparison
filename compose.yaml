@@ -13,6 +13,7 @@ services:
       FASTIFY_API_SERVER_ADDRESS: "fastify-tcp:8080"
       ROCKET_API_SERVER_ADDRESS: "rocket-tcp:8080"
       WARP_API_SERVER_ADDRESS: "warp-tcp:8080"
+      AXUM_API_SERVER_ADDRESS: "axum-tcp:8080"
       GIN_API_SERVER_ADDRESS: "gin-tcp:8080"
       FIBER_API_SERVER_ADDRESS: "fiber-tcp:8080"
     volumes:
@@ -138,13 +139,24 @@ services:
     environment:
       PREFIX: "/warp-tcp/v1"
 
+  axum-tcp:
+    container_name: axum-tcp
+    build:
+      context: ./rust/axum
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8080"
+    tty: true
+    environment:
+      PREFIX: "/axum-tcp/v1"
+
   gin-tcp:
     container_name: gin-tcp
     build:
       context: ./go/gin
       dockerfile: Dockerfile
     ports:
-      - "8086:8080"
+      - "8087:8080"
     tty: true
     environment:
       PREFIX: "/gin-tcp/v1"
@@ -155,7 +167,7 @@ services:
       context: ./go/fiber
       dockerfile: Dockerfile
     ports:
-      - "8087:8080"
+      - "8088:8080"
     tty: true
     environment:
       PREFIX: "/fiber-tcp/v1"

@@ -6,6 +6,7 @@
     reverse_proxy /fastify-tcp/* {$FASTIFY_API_SERVER_ADDRESS}
     reverse_proxy /rocket-tcp/* {$ROCKET_API_SERVER_ADDRESS}
     reverse_proxy /warp-tcp/* {$WARP_API_SERVER_ADDRESS}
+    reverse_proxy /axum-tcp/* {$AXUM_API_SERVER_ADDRESS}
     reverse_proxy /gin-tcp/* {$GIN_API_SERVER_ADDRESS}
     reverse_proxy /fiber-tcp/* {$FIBER_API_SERVER_ADDRESS}
 }

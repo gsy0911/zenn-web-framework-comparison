@@ -302,6 +302,48 @@ tasks:
           proxy: caddy
           protocol: tcp
 
+  bare-tcp-axum:
+    desc: axum - tcp; e.g. $ task axum-tcp
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: http://localhost:8086
+          url: /axum-tcp/v1/user
+          language: rust
+          framework: axum
+          proxy: none
+          protocol: tcp
+
+  nginx-tcp-axum:
+    desc: axum - nginx tcp; e.g. $ task nginx-tcp-axum
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:8443
+          url: /axum-tcp/v1/user
+          language: rust
+          framework: axum
+          proxy: nginx
+          protocol: tcp
+
+  caddy-tcp-axum:
+    desc: axum - caddy tcp; e.g. $ task caddy-tcp-axum
+    internal: true
+    cmds:
+      - task: locust
+        vars:
+          locustfile: "api_v1_user.py"
+          host: https://localhost:443
+          url: /axum-tcp/v1/user
+          language: rust
+          framework: axum
+          proxy: caddy
+          protocol: tcp
+
   bare-tcp-gin:
     desc: gin - tcp; e.g. $ task gin-tcp
     internal: true
@@ -309,7 +351,7 @@ tasks:
       - task: locust
         vars:
           locustfile: "api_v1_user.py"
-          host: http://localhost:8086
+          host: http://localhost:8087
           url: /gin-tcp/v1/user
           language: go
           framework: gin
@@ -351,7 +393,7 @@ tasks:
       - task: locust
         vars:
           locustfile: "api_v1_user.py"
-          host: http://localhost:8087
+          host: http://localhost:8088
           url: /fiber-tcp/v1/user
           language: go
           framework: fiber
@@ -404,6 +446,8 @@ tasks:
       - task: nginx-tcp-rocket
       - task: bare-tcp-warp
       - task: nginx-tcp-warp
+      - task: bare-tcp-axum
+      - task: nginx-tcp-axum
       - task: bare-tcp-gin
       - task: nginx-tcp-gin
       - task: bare-tcp-fiber
