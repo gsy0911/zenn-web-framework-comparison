@@ -59,6 +59,7 @@ def main():
         "python_flask",
         "rust_rocket",
         "rust_warp",
+        "rust_axum",
         "typescript_express",
         "typescript_nestjs",
         "typescript_fastify",
