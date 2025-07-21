@@ -54,6 +54,7 @@ def main():
     base_path = "./reports/{language_framework}_{proxy_protocol}_stats.csv"
     languages_frameworks = [
         "go_gin",
+        "go_fiber",
         "python_fastapi",
         "python_flask",
         "rust_rocket",
