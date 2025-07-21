@@ -60,7 +60,8 @@ def main():
         "rust_rocket",
         "rust_warp",
         "typescript_express",
-        "typescript_nestjs"
+        "typescript_nestjs",
+        "typescript_fastify",
     ]
     proxy_protocols = ["none_tcp", "nginx_tcp", "nginx_uds", "caddy_tcp"]
     paths = []
